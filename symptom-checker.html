@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symptom Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #FF6B6B, #FFD93D);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background-color: #ff6b6b;
+      color: white;
+      font-size: 1.2em;
+      border-radius: 0 0 15px 15px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      max-width: 600px;
+      z-index: 1;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      padding: 0 15px;
+      font-weight: bold;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    h1 {
+      color: #FF6B6B;
+      font-size: 2em;
+      margin-bottom: 15px;
+      margin-top: 60px;
+    }
+    .symptoms-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .symptoms-list label {
+      display: block;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1.1em;
+      background-color: #FFD93D;
+      color: #333;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+    .symptoms-list input[type="checkbox"] {
+      display: none;
+    }
+    .symptoms-list input[type="checkbox"]:checked + label {
+      background-color: #FF6B6B;
+      color: #ffffff;
+      transform: scale(1.1);
+    }
+    .results {
+      margin-top: 20px;
+    }
+    .results h3 {
+      color: #FF6B6B;
+      font-size: 1.5em;
+    }
+    .results ul {
+      list-style: none;
+      padding: 0;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <a href="symptom-checker.html">🏠 Home</a>
+    <a href="login.html">🔒 Login</a>
+  </div>
+
+  <!-- Symptom Checker Page -->
+  <h1>Symptom Checker</h1>
+  <p>Select any symptoms you’re experiencing:</p>
+  <div class="symptoms-list">
+    <input type="checkbox" id="fever" onchange="checkSymptoms()">
+    <label for="fever">Fever</label>
+    <input type="checkbox" id="cough" onchange="checkSymptoms()">
+    <label for="cough">Cough</label>
+    <input type="checkbox" id="headache" onchange="checkSymptoms()">
+    <label for="headache">Headache</label>
+    <input type="checkbox" id="fatigue" onchange="checkSymptoms()">
+    <label for="fatigue">Fatigue</label>
+    <input type="checkbox" id="soreThroat" onchange="checkSymptoms()">
+    <label for="soreThroat">Sore Throat</label>
+    <input type="checkbox" id="musclePain" onchange="checkSymptoms()">
+    <label for="musclePain">Muscle Pain</label>
+    <input type="checkbox" id="shortnessOfBreath" onchange="checkSymptoms()">
+    <label for="shortnessOfBreath">Shortness of Breath</label>
+    <input type="checkbox" id="chestPain" onchange="checkSymptoms()">
+    <label for="chestPain">Chest Pain</label>
+    <input type="checkbox" id="nausea" onchange="checkSymptoms()">
+    <label for="nausea">Nausea</label>
+    <input type="checkbox" id="vomiting" onchange="checkSymptoms()">
+    <label for="vomiting">Vomiting</label>
+    <input type="checkbox" id="diarrhea" onchange="checkSymptoms()">
+    <label for="diarrhea">Diarrhea</label>
+  </div>
+  
+  <div class="results" id="results"></div>
+</div>
+
+<script>
+  function checkSymptoms() {
+    const symptoms = {
+      fever: document.getElementById("fever").checked,
+      cough: document.getElementById("cough").checked,
+      headache: document.getElementById("headache").checked,
+      fatigue: document.getElementById("fatigue").checked,
+      soreThroat: document.getElementById("soreThroat").checked,
+      musclePain: document.getElementById("musclePain").checked,
+      shortnessOfBreath: document.getElementById("shortnessOfBreath").checked,
+      chestPain: document.getElementById("chestPain").checked,
+      nausea: document.getElementById("nausea").checked,
+      vomiting: document.getElementById("vomiting").checked,
+      diarrhea: document.getElementById("diarrhea").checked
+    };
+
+    let possibleConditions = new Set();
+
+    if (symptoms.fever) possibleConditions.add("Fever - possible sign of infection or illness");
+    if (symptoms.cough) possibleConditions.add("Cough - could indicate respiratory issues");
+    if (symptoms.fever && symptoms.cough) possibleConditions.add("Flu");
+    if (symptoms.headache) possibleConditions.add("Headache - could be a migraine or tension headache");
+    if (symptoms.fatigue) possibleConditions.add("Fatigue - possible Chronic Fatigue Syndrome or low iron");
+    if (symptoms.fever && symptoms.shortnessOfBreath && symptoms.chestPain) possibleConditions.add("Pneumonia");
+    if (symptoms.vomiting && symptoms.diarrhea) possibleConditions.add("Food Poisoning or Gastroenteritis");
+    if (symptoms.cough && symptoms.soreThroat) possibleConditions.add("Common Cold");
+    if (symptoms.cough && symptoms.fever && symptoms.shortnessOfBreath) possibleConditions.add("COVID-19");
+
+    let resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+    
+    if (possibleConditions.size > 0) {
+      resultsDiv.innerHTML = "<h3>Possible Conditions:</h3><ul>" + Array.from(possibleConditions).map(cond => `<li>${cond}</li>`).join("") + "</ul>";
+    } else {
+      resultsDiv.innerHTML = "<h3>No conditions matched your symptoms.</h3><p>Please consult a healthcare provider for advice.</p>";
+    }
+  }
+</script>
+
+</body>
+</html>
